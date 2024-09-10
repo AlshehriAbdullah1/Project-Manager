@@ -1,11 +1,11 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Head, Link, router} from "@inertiajs/react";
 import Pagination from "@/Components/Pagination.jsx";
-import {PROJECT_STATUS_CLASS_MAP, PROJECT_STATUS_TEXT_MAP} from "@/constants.jsx";
+import {TASK_STATUS_CLASS_MAP, TASK_STATUS_TEXT_MAP} from "@/constants.jsx";
 import TextInput from "@/Components/TextInput.jsx";
 import SelectInput from "@/Components/SelectInput.jsx";
 
-export default function Index({auth, projects,queryParams=null}) {
+export default function Index({auth, tasks,queryParams=null}) {
 
     queryParams = queryParams || {};
     const searchFiledChanged= (name,value)=>{
@@ -16,7 +16,7 @@ export default function Index({auth, projects,queryParams=null}) {
         else{
             delete queryParams[name];
         }
-        router.get(route('project.index'),queryParams)
+        router.get(route('task.index'),queryParams)
 
     };
     //
@@ -34,7 +34,7 @@ export default function Index({auth, projects,queryParams=null}) {
                 queryParams.sort_direction= 'asc';
 
             }
-            router.get(route('project.index'),queryParams)
+            router.get(route('task.index'),queryParams)
         }
 
         else{
@@ -48,15 +48,15 @@ export default function Index({auth, projects,queryParams=null}) {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Projects</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Tasks</h2>}
         >
 
-            <Head title="Projects"/>
+            <Head title="Tasks"/>
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
-                            {/*<pre>{JSON.stringify(projects, undefined, 2)}</pre>*/}
+                            {/*<pre>{JSON.stringify(tasks, undefined, 2)}</pre>*/}
                             <div className="overflow-auto">
 
                                 <table
@@ -125,7 +125,7 @@ export default function Index({auth, projects,queryParams=null}) {
                                         <th className="px-3 py-3"></th>
                                         <th className="px-3 py-3">
                                             <TextInput className="w-full"
-                                                       placeholder="Project Name"
+                                                       placeholder="Task Name"
                                                        defaultValue={queryParams.name}
                                                        onBlur={e => searchFiledChanged("name", e.target.value)}
                                                        onKeyPress={e => onKeyPress("name", e)}
@@ -155,28 +155,25 @@ export default function Index({auth, projects,queryParams=null}) {
                                     </thead>
                                     <tbody>
 
-                                    {projects.data.map(project => (
+                                    {tasks.data.map(task => (
                                         <tr className={"bg-white border-b dark:bg-gray-800 dark:border-gray-700"}
-                                            key={project.id}>
-                                            <td className={"px-3 py-2"}>{project.id}</td>
+                                            key={task.id}>
+                                            <td className={"px-3 py-2"}>{task.id}</td>
                                             <td className={"px-3 py-2"}>
-                                                <img src={project.image_path} style={{width: 60}}/>
+                                                <img src={task.image_path} style={{width: 60}}/>
                                             </td>
-                                            <th className={"px-3 py-2 text-white hover:underline text-nowrap  cursor-pointer"}>
-
-                                                <Link href={route('project.show',project.id)}> {project.name}</Link>
-                                               </th>
+                                            <td className={"px-3 py-2"}>{task.name}</td>
                                             <td className={"px-3 py-2"}>
                                             <span
-                                                className={"px-2 py-1 rounded text-white " + PROJECT_STATUS_CLASS_MAP[project.status]}>
-                                                {PROJECT_STATUS_TEXT_MAP[project.status]}
+                                                className={"px-2 py-1 rounded text-white " + TASK_STATUS_CLASS_MAP[task.status]}>
+                                                {TASK_STATUS_TEXT_MAP[task.status]}
                                             </span>
                                             </td>
-                                            <td className={"px-3 py-2"}>{project.created_at}</td>
-                                            <td className={"px-3 py-2"}>{project.due_date}</td>
-                                            <td className={"px-3 py-2"}>{project.createdBy.name}</td>
+                                            <td className={"px-3 py-2"}>{task.created_at}</td>
+                                            <td className={"px-3 py-2"}>{task.due_date}</td>
+                                            <td className={"px-3 py-2"}>{task.createdBy.name}</td>
                                             <td className={"px-3 py-2"}>
-                                                <Link href={route('project.edit', project.id)}
+                                                <Link href={route('task.edit', task.id)}
                                                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
 
                                                 >
@@ -184,7 +181,7 @@ export default function Index({auth, projects,queryParams=null}) {
                                                     Edit
                                                 </Link>
 
-                                                <Link href={route('project.destroy', project.id)}
+                                                <Link href={route('task.destroy', task.id)}
                                                       className="font-medium text-blue-600 dark:text-red-500 hover:underline mx-1"
 
                                                 >
@@ -199,7 +196,7 @@ export default function Index({auth, projects,queryParams=null}) {
                                 </table>
                             </div>
 
-                            <Pagination links={projects.meta.links}/>
+                            <Pagination links={tasks.meta.links}/>
                         </div>
                     </div>
                 </div>
