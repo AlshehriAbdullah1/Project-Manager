@@ -8,6 +8,7 @@ class Project extends Model
 {
     use HasFactory;
 
+//    public mixed $image_path;
     protected $fillable= [
         'name',
         'image_path',

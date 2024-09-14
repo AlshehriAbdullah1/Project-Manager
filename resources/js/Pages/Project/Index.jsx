@@ -43,6 +43,16 @@ export default function Index({auth, projects,queryParams=null,success}) {
         }
     }
 
+    const deleteProject = (project)=>{
+        // href={route('project.destroy', project.id)}
+
+        if(!window.confirm("Please confirm to delete the project ")){
+            return;
+        }
+        router.delete(route('project.destroy',project.id))
+
+    }
+
     const ArrowDirection = SortingArrow({direction: queryParams.sort_direction});
 
     return (
@@ -197,13 +207,16 @@ export default function Index({auth, projects,queryParams=null,success}) {
                                                     Edit
                                                 </Link>
 
-                                                <Link href={route('project.destroy', project.id)}
+                                                <button
+                                                    onClick={(e)=>deleteProject(project)}
+
+
                                                       className="mx-1 font-medium text-blue-600 hover:underline dark:text-red-500"
 
                                                 >
 
                                                     Delete
-                                                </Link>
+                                                </button>
                                             </td>
                                         </tr>
                                     ))}
