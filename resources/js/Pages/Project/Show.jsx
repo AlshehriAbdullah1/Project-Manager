@@ -5,8 +5,6 @@ import TasksTable from "@/Pages/Task/TasksTable.jsx";
 
 
 export default function Show ({auth, project, queryParams,tasks}){
-    console.log(project);
-    console.log(project.createdBy);
     return (
         <Authenticated
             user={auth.user}
@@ -113,7 +111,7 @@ export default function Show ({auth, project, queryParams,tasks}){
                 <div className={"mx-auto max-w-7xl sm:px-6 lg:px-8"}>
                     <div className={"overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg"}>
                         <div className={"p-6 text-gray-900 dark:text-gray-100"}>
-                        <TasksTable queryParams={queryParams} tasks={tasks}/> </div>
+                        <TasksTable queryParams={queryParams} tasks={tasks} hideProjectColumn={true}/> </div>
                     </div>
                 </div>
             </div>

@@ -4,7 +4,7 @@ import {TASK_STATUS_CLASS_MAP, TASK_STATUS_TEXT_MAP} from "@/constants.jsx";
 import {Link, router} from "@inertiajs/react";
 import Pagination from "@/Components/Pagination.jsx";
 
-export default function TasksTable({tasks,queryParams}){
+export default function TasksTable({tasks,queryParams, hideProjectColumn =false}){
     queryParams = queryParams || {};
     const searchFiledChanged= (name,value)=>{
         if(value){
@@ -73,6 +73,11 @@ export default function TasksTable({tasks,queryParams}){
                        }
 
                        </th>
+
+                       {!hideProjectColumn &&  <th onClick={e => sortChanged('name')} className="px-3 py-3">
+                          Project Name
+
+                       </th>}
                        <th onClick={e => sortChanged('status')} className="px-3 py-3">
                            Status
                            {
@@ -118,6 +123,9 @@ export default function TasksTable({tasks,queryParams}){
                            />
 
                        </th>
+
+                       {!hideProjectColumn &&  <th  className="px-3 py-3"></th>}
+
                        <th className="px-3 py-3">
                            <SelectInput className="w-full"
                                         onChange={e => searchFiledChanged("status", e.target.value)}
@@ -148,6 +156,7 @@ export default function TasksTable({tasks,queryParams}){
                                <img src={task.image_path} style={{width: 60}}/>
                            </td>
                            <td className={"px-3 py-2"}>{task.name}</td>
+                           {!hideProjectColumn&&<td className={"px-3 py-2"}>{task.project.name}</td>}
                            <td className={"px-3 py-2"}>
                                             <span
                                                 className={"px-2 py-1 rounded text-white " + TASK_STATUS_CLASS_MAP[task.status]}>

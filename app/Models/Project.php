@@ -8,7 +8,14 @@ class Project extends Model
 {
     use HasFactory;
 
+    protected $fillable= [
+        'name',
+        'image_path',
+        'description'    ,
+        'due_date',
+        'status',  'created_by',  'updated_by',
 
+    ];
     public function tasks(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Task::class);
