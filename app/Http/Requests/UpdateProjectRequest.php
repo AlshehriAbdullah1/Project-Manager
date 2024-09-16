@@ -21,13 +21,25 @@ class UpdateProjectRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
+
     {
         return [
-            "name"=>['required', 'max:255'],
-            'image'=>['nullable','image'],
-            "description"=>['string'],
-            "due_date"=>['nullable',''],
-            'status'=>['required',Rule::in(['pending','in_progress','completed'])]
+
+            "name" => ['sometimes', 'string', 'max:255'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            "description" => ['sometimes', 'string'],
+            "due_date" => ['sometimes', 'date'],
+            'status' => ['sometimes', Rule::in(['pending', 'in_progress', 'completed'])]
         ];
+    }
+
+    protected function passedValidation(): void
+    {
+
+        // Log the entire request data
+        \Log::info('Request data:', $this->all());
+
+        // Log the validated data
+        \Log::info('Validated data:', $this->validated());
     }
 }

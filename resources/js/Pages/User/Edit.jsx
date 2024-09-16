@@ -7,16 +7,16 @@ import TextAreaInput from "@/Components/TextAreaInput.jsx";
 import SelectInput from "@/Components/SelectInput.jsx";
 
 
-export default function Edit ({auth,project}) {
-    // console.log('project is : ');
-    // console.log(project);
+export default function Edit ({auth,user}) {
+    // console.log('user is : ');
+    // console.log(user);
 
 const {data,setData, post, processing, errors , reset}= useForm({
     image:null,
-    name:project.name||'',
-    status:project.status|| '',
-    description:project.description|| '',
-    due_date:project.due_date|| '',
+    name:user.name||'',
+    status:user.status|| '',
+    description:user.description|| '',
+    due_date:user.due_date|| '',
     _method: 'PUT'
 })
 
@@ -24,7 +24,7 @@ const {data,setData, post, processing, errors , reset}= useForm({
     e.preventDefault();
     // console.log("submit requested!");
     console.log(data);
-        post(route('project.update', project.id)
+        post(route('user.update', user.id)
             );
 }
 
@@ -34,32 +34,32 @@ const {data,setData, post, processing, errors , reset}= useForm({
             header={
                 <div className={"flex justify-between items-center"}>
 
-                    <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Edit Project {project.name}</h2>
+                    <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Edit User {user.name}</h2>
                 </div>
 
             }
             user={auth.user}
 
         >
-            <Head title="Projects"/>
+            <Head title="Users"/>
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
 
                         <form onSubmit={onSubmit}
                               className={"p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"}>
-                            {/*Project Image*/}
-                            {project.image_path && <div className={"mb-4"}>
-                                <img src={project.image_path} alt={""} className={"w-64"}/>
+                            {/*User Image*/}
+                            {user.image_path && <div className={"mb-4"}>
+                                <img src={user.image_path} alt={""} className={"w-64"}/>
                             </div>}
                             {/*<div>*/}
-                            {/*    <img src={project.image_path}*/}
+                            {/*    <img src={user.image_path}*/}
                             {/*         alt=""*/}
                             {/*         className={"w-full h-64 object-cover"}/>*/}
                             {/*</div>*/}
                             <div>
-                                <InputLabel htmlFor={"project_image_path"} value={"Project Image"}/>
-                                <input id={"project_image_path"}
+                                <InputLabel htmlFor={"user_image_path"} value={"User Image"}/>
+                                <input id={"user_image_path"}
                                            type={"file"}
                                            name={"image"}
                                            className={"mt-1 block w-full"}
@@ -70,10 +70,10 @@ const {data,setData, post, processing, errors , reset}= useForm({
                                 />
                                 <InputError message={errors.image} className={"mt-2"}/>
                             </div>
-                            {/*Project Name*/}
+                            {/*User Name*/}
                             <div className={"mt-4"}>
-                                <InputLabel htmlFor={"project_name"} value={"Project Name"}/>
-                                <TextInput id={"project_name"}
+                                <InputLabel htmlFor={"user_name"} value={"User Name"}/>
+                                <TextInput id={"user_name"}
                                            type={"text"}
                                            name={"name"}
                                            value={data.name}
@@ -83,11 +83,11 @@ const {data,setData, post, processing, errors , reset}= useForm({
                                 />
                                 <InputError message={errors.name} className={"mt-2"}/>
                             </div>
-                            {/*Project Description*/}
+                            {/*User Description*/}
                             <div className={"mt-4"}>
-                                <InputLabel htmlFor={"project_description"} value={"Project Description"}/>
+                                <InputLabel htmlFor={"user_description"} value={"User Description"}/>
 
-                                <TextAreaInput id={"project_description"}
+                                <TextAreaInput id={"user_description"}
                                                type={"text"}
                                                name={"description"}
                                                value={data.description}
@@ -97,10 +97,10 @@ const {data,setData, post, processing, errors , reset}= useForm({
                                 />
                                 <InputError message={errors.description} className={"mt-2"}/>
                             </div>
-                            {/*    Project Due Date*/}
+                            {/*    User Due Date*/}
                             <div className={"mt-4"}>
-                                <InputLabel htmlFor={"project_due_date"} value={"Project Deadline"}/>
-                                <TextInput id={"project_due_date"}
+                                <InputLabel htmlFor={"user_due_date"} value={"User Deadline"}/>
+                                <TextInput id={"user_due_date"}
                                            type={"date"}
                                            name={"due_date"}
                                            value={data.due_date}
@@ -111,11 +111,11 @@ const {data,setData, post, processing, errors , reset}= useForm({
                                 <InputError message={errors.due_date} className={"mt-2"}/>
                             </div>
 
-                            {/*    Project Status*/}
+                            {/*    User Status*/}
                             <div className={"mt-4"}>
-                                <InputLabel htmlFor={"project_status"} value={"Project Status"}/>
+                                <InputLabel htmlFor={"user_status"} value={"User Status"}/>
                                 <SelectInput name={"status"}
-                                             id={"project_status"}
+                                             id={"user_status"}
                                              className={"mt-1 block w-full"}
                                              onChange={(e) => setData('status', e.target.value)}
                                 >
@@ -132,7 +132,7 @@ const {data,setData, post, processing, errors , reset}= useForm({
 
 
                             <div className={"mt-4 text-right"}>
-                                <Link href={route('project.index')}
+                                <Link href={route('user.index')}
                                       className={"bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-all hover:bg-gray-200 mr-2"}
                                 >Cancel
                                 </Link>
