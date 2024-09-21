@@ -8,6 +8,10 @@ use App\Models\Project;
 use App\Models\Task;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class TaskController extends Controller
 {
@@ -41,16 +45,20 @@ class TaskController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create( $project)
+    public function create( )
     {
-        dd($project);
-        // Find the project using the project ID
-        $data = Project::query();
-        $data->findOrFail($project);
-        dd($data);
 
-        // Now you can pass the project to the view or do other operations
-//        dd($project); // Debugging output to see the project details
+        $data = request('project');
+
+        // Find the project using the project ID
+        $query = Project::query();
+        $users = User::all();
+        $project = $query->findOrFail($data);
+        return inertia('Task/Create',[
+            'project'=>$project,
+            'users'=>$users
+        ]);
+
     }
 
     /**
@@ -59,6 +67,24 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request)
     {
         //
+        //
+        $data = $request->validationData();
+        /** @var $image UploadedFile **/
+        $image= $data['image']??null;
+        $data['created_by']=Auth::id();
+        $data['updated_by']=Auth::id();
+        $data['updated_at']=time();
+        if($image){
+            $data['image_path']=$image->store('task/'.$data['project_id'].'/'.Str::random(),'public');
+        }
+
+        Task::create($data);
+
+
+        return to_route('project.show',[
+            'project'=>$data['project_id']
+        ])
+            ->with('success','Task was created successfully');
     }
 
     /**

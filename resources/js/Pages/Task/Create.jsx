@@ -7,14 +7,18 @@ import TextAreaInput from "@/Components/TextAreaInput.jsx";
 import SelectInput from "@/Components/SelectInput.jsx";
 
 
-export default function Create ({auth}) {
+export default function Create ({auth,project,users}) {
 const {data,setData, post, processing, errors , reset}= useForm({
     image:'',
     name:'',
     status:'',
     priority:'',
     description:'',
-    due_date:''
+    due_date:'',
+    assigned_user_id:auth.user.id,
+    project_id:project.id,
+
+
 })
 
     const onSubmit = (e)=>{
@@ -113,6 +117,45 @@ const {data,setData, post, processing, errors , reset}= useForm({
                                 </SelectInput>
 
                                 <InputError message={errors.status} className={"mt-2"}/>
+                            </div>
+                            {/*    Task Priority*/}
+                            <div className={"mt-4"}>
+                                <InputLabel htmlFor={"task_priority"} value={"Task Priority"}/>
+                                <SelectInput name={"priority"}
+                                id={"task_status"}
+                                             className={"mt-1 block w-full"}
+                                             onChange={(e)=>setData('priority',e.target.value)}
+                                >
+                                    <option value={""} disabled={true}>Select Priority</option>
+                                    <option value={"low"}>Low</option>
+                                    <option value={"medium"}>Medium</option>
+                                    <option value={"high"}>High</option>
+
+
+
+                                </SelectInput>
+
+                                <InputError message={errors.priority} className={"mt-2"}/>
+                            </div>
+
+                            {/* User Assignment */}
+                            <div className="mt-4">
+                                <InputLabel htmlFor="assigned_user_id" value="Assign User" />
+                                <SelectInput
+                                    name="assigned_user_id"
+                                    id="assigned_user_id"
+                                    className="mt-1 block w-full"
+                                    value={data.assigned_user_id}  // Set the default selected user
+                                    onChange={e => setData('assigned_user_id', e.target.value)}
+                                >
+                                    <option value="" disabled>Select a user</option>
+                                    {users.map((user) => (
+                                        <option key={user.id} value={user.id}>
+                                            {auth.user.id == user.id ? user.name+' (Me)':user.name}
+                                        </option>
+                                    ))}
+                                </SelectInput>
+                                <InputError message={errors.assigned_user_id} className="mt-2" />
                             </div>
 
                             {/*Task cancel, edit*/}

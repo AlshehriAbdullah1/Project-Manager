@@ -145,7 +145,7 @@ export default function TasksTable({tasks,queryParams, hideProjectColumn =false,
                        <th className="px-3 py-3"></th>
 
                        <th className="px-3 py-3">
-                           {/*<Link href={route("task.create",{'project':projectId})} className={"bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"}>Add Task</Link>*/}
+                           <Link href={route("task.create",{'project':projectId})} className={"bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"}>Add Task</Link>
 
                        </th>
                    </tr>
