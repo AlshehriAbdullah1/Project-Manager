@@ -24,7 +24,7 @@ class StoreUserRequest extends FormRequest
     {
         return [
             "name"=>['required','string','max:26'],
-            "email"=>['required','string','email'],
+            "email"=>['required','string','email','unique:users,email'],
             "password"=>['required','confirmed',Password::min(6)->max(30)->mixedCase()->symbols()],
         ];
     }

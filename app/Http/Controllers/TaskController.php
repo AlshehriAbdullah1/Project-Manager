@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TaskResource;
+use App\Models\Project;
 use App\Models\Task;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
@@ -39,9 +41,16 @@ class TaskController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create( $project)
     {
-        //
+        dd($project);
+        // Find the project using the project ID
+        $data = Project::query();
+        $data->findOrFail($project);
+        dd($data);
+
+        // Now you can pass the project to the view or do other operations
+//        dd($project); // Debugging output to see the project details
     }
 
     /**

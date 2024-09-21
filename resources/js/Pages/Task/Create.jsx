@@ -12,13 +12,14 @@ const {data,setData, post, processing, errors , reset}= useForm({
     image:'',
     name:'',
     status:'',
+    priority:'',
     description:'',
     due_date:''
 })
 
     const onSubmit = (e)=>{
     e.preventDefault();
-    post(route('project.store'));
+    post(route('task.store'));
     }
 
 
@@ -27,24 +28,24 @@ const {data,setData, post, processing, errors , reset}= useForm({
             header={
                 <div className={"flex justify-between items-center"}>
 
-                    <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Create New Projects</h2>
+                    <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Create New Tasks</h2>
                 </div>
 
             }
             user={auth.user}
 
         >
-            <Head title="Projects"/>
+            <Head title="Tasks"/>
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
 
                         <form onSubmit={onSubmit}
                               className={"p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"}>
-                            {/*Project Image*/}
+                            {/*Task Image*/}
                             <div>
-                                <InputLabel htmlFor={"project_image_path"} value={"Project Image"}/>
-                                <TextInput id={"project_image_path"}
+                                <InputLabel htmlFor={"task_image_path"} value={"Task Image"}/>
+                                <TextInput id={"task_image_path"}
                                            type={"file"}
                                            name={"image"}
                                            className={"mt-1 block w-full"}
@@ -53,10 +54,10 @@ const {data,setData, post, processing, errors , reset}= useForm({
                                 />
                                 <InputError message={errors.image} className={"mt-2"}/>
                             </div>
-                            {/*Project Name*/}
+                            {/*Task Name*/}
                             <div className={"mt-4"}>
-                                <InputLabel htmlFor={"project_name"} value={"Project Name"}/>
-                                <TextInput id={"project_name"}
+                                <InputLabel htmlFor={"task_name"} value={"Task Name"}/>
+                                <TextInput id={"task_name"}
                                            type={"text"}
                                            name={"name"}
                                            value={data.name}
@@ -66,11 +67,11 @@ const {data,setData, post, processing, errors , reset}= useForm({
                                 />
                                 <InputError message={errors.name} className={"mt-2"}/>
                             </div>
-                            {/*Project Description*/}
+                            {/*Task Description*/}
                             <div className={"mt-4"}>
-                                <InputLabel htmlFor={"project_description"} value={"Project Description"}/>
+                                <InputLabel htmlFor={"task_description"} value={"Task Description"}/>
 
-                                <TextAreaInput id={"project_description"}
+                                <TextAreaInput id={"task_description"}
                                                type={"text"}
                                                name={"description"}
                                                value={data.description}
@@ -80,10 +81,10 @@ const {data,setData, post, processing, errors , reset}= useForm({
                                 />
                                 <InputError message={errors.description} className={"mt-2"}/>
                             </div>
-                            {/*    Project Due Date*/}
+                            {/*    Task Due Date*/}
                             <div className={"mt-4"}>
-                                <InputLabel htmlFor={"project_due_date"} value={"Project Deadline"}/>
-                                <TextInput id={"project_due_date"}
+                                <InputLabel htmlFor={"task_due_date"} value={"Task Deadline"}/>
+                                <TextInput id={"task_due_date"}
                                            type={"date"}
                                            name={"due_date"}
                                            value={data.due_date}
@@ -94,11 +95,11 @@ const {data,setData, post, processing, errors , reset}= useForm({
                                 <InputError message={errors.due_date} className={"mt-2"}/>
                             </div>
 
-                            {/*    Project Status*/}
+                            {/*    Task Status*/}
                             <div className={"mt-4"}>
-                                <InputLabel htmlFor={"project_status"} value={"Project Status"}/>
+                                <InputLabel htmlFor={"task_status"} value={"Task Status"}/>
                                 <SelectInput name={"status"}
-                                id={"project_status"}
+                                id={"task_status"}
                                              className={"mt-1 block w-full"}
                                              onChange={(e)=>setData('status',e.target.value)}
                                 >
@@ -114,9 +115,9 @@ const {data,setData, post, processing, errors , reset}= useForm({
                                 <InputError message={errors.status} className={"mt-2"}/>
                             </div>
 
-                            {/*Project cancel, edit*/}
+                            {/*Task cancel, edit*/}
                             <div className={"mt-4 text-right"}>
-                                <Link href={route('project.index')}
+                                <Link href={route('task.index')}
                                       className={"bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-all hover:bg-gray-200 mr-2"}
                                 >Cancel
                                 </Link>

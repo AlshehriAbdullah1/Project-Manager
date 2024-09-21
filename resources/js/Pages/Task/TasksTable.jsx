@@ -4,7 +4,8 @@ import {TASK_STATUS_CLASS_MAP, TASK_STATUS_TEXT_MAP} from "@/constants.jsx";
 import {Link, router} from "@inertiajs/react";
 import Pagination from "@/Components/Pagination.jsx";
 
-export default function TasksTable({tasks,queryParams, hideProjectColumn =false}){
+export default function TasksTable({tasks,queryParams, hideProjectColumn =false,projectId}){
+
     queryParams = queryParams || {};
     const searchFiledChanged= (name,value)=>{
         if(value){
@@ -143,7 +144,10 @@ export default function TasksTable({tasks,queryParams, hideProjectColumn =false}
                        <th className="px-3 py-3"></th>
                        <th className="px-3 py-3"></th>
 
-                       <th className="px-3 py-3"></th>
+                       <th className="px-3 py-3">
+                           {/*<Link href={route("task.create",{'project':projectId})} className={"bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"}>Add Task</Link>*/}
+
+                       </th>
                    </tr>
                    </thead>
                    <tbody>

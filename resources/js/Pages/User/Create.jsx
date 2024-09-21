@@ -58,6 +58,7 @@ const {data,setData, post, processing, errors , reset}= useForm({
                                 />
                                 <InputError message={errors.name} className={"mt-2"}/>
                             </div>
+                            {/* User email  */}
                             <div className={"mt-4"}>
                                 <InputLabel htmlFor={"user_email"} value={"User Email"}/>
                                 <TextInput id={"user_email"}
@@ -70,6 +71,7 @@ const {data,setData, post, processing, errors , reset}= useForm({
                                 />
                                 <InputError message={errors.email} className={"mt-2"}/>
                             </div>
+                            {/* User password  */}
                             <div className={"mt-4"}>
                                 <InputLabel htmlFor={"user_password"} value={"Password"}/>
                                 <TextInput id={"user_password"}
@@ -82,6 +84,7 @@ const {data,setData, post, processing, errors , reset}= useForm({
                                 />
                                 <InputError message={errors.password} className={"mt-2"}/>
                             </div>
+                            {/* User password confirm */}
                             <div className={"mt-4"}>
                                 <InputLabel htmlFor={"user_password_confirmation"} value={"Confirm Password"}/>
                                 <TextInput id={"user_password_confirmation"}
@@ -95,7 +98,7 @@ const {data,setData, post, processing, errors , reset}= useForm({
                                 <InputError message={errors.email} className={"mt-2"}/>
                             </div>
 
-
+                            {/* User delete, edit*/}
                             <div className={"mt-4 text-right"}>
                                 <Link href={route('user.index')}
                                       className={"bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-all hover:bg-gray-200 mr-2"}

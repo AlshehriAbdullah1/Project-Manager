@@ -6,6 +6,8 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -33,6 +35,7 @@ class UserController extends Controller
             'users'=>UserResource::collection($users),
             'queryParams'=>request()->query()?:null,
             'success'=>session('success'),
+            'failed'=>session('failed')
         ]);
 
     }
@@ -52,6 +55,7 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $data = $request->validationData();
+        $data['email_verified_at']=time();
         $data['password'] = bcrypt( $data['password']);
 
 
@@ -77,6 +81,9 @@ class UserController extends Controller
     public function edit(User $user)
     {
         //
+        return inertia("User/Edit",[
+            'user'=>new UserResource($user)
+        ]);
     }
 
     /**
@@ -85,6 +92,29 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         //
+
+        $data = $request->validated();
+
+//        if the updated password is the same as the current password, return error message
+//        if($user->getAuthPassword()==bcrypt($data['password'])){
+//            // I want to return error message
+//        }
+        $data['updated_at']=time();
+        $data['email_verified_at']=time();
+        $password=$data['password']??null;
+
+        if($password){
+            $data['password']=  bcrypt($password);
+        }
+        else{
+            unset($data['password']);
+        }
+       $user->update($data);
+
+        return to_route('user.index')
+            ->with('success','user info has been updated successfully');
+
+
     }
 
     /**
@@ -92,6 +122,18 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+
+        if($user->id==Auth::id()){
+            return to_route('user.index')->with('failed',"error: you cannot delete yourself :)");
+
+        }
+        $name= $user->name;
+        $user->delete();
+
+
+
+
+
+        return to_route('user.index')->with('success',"user: $name was deleted successfully");
     }
 }

@@ -3,8 +3,9 @@ import {Head, Link, router} from "@inertiajs/react";
 import Pagination from "@/Components/Pagination.jsx";
 import TextInput from "@/Components/TextInput.jsx";
 
-export default function Index({auth, users,queryParams=null,success}) {
+export default function Index({auth, users,queryParams=null,success,failed}) {
     queryParams = queryParams || {};
+    console.log(failed)
     const searchFiledChanged= (name,value)=>{
         if(value){
             queryParams[name]=value;
@@ -72,6 +73,12 @@ export default function Index({auth, users,queryParams=null,success}) {
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     {success&& <div className={"bg-emerald-500 py-2 px-4 text-white rounded mb-4"}>
                         {success}
+
+
+                    </div>}
+                    {failed&& <div className={"bg-red-500 py-2 px-4 text-white rounded mb-4"}>
+                        {failed}
+
 
                     </div>}
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">

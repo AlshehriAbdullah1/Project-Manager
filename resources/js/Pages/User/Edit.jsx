@@ -9,21 +9,19 @@ import SelectInput from "@/Components/SelectInput.jsx";
 
 export default function Edit ({auth,user}) {
     // console.log('user is : ');
-    // console.log(user);
 
 const {data,setData, post, processing, errors , reset}= useForm({
-    image:null,
     name:user.name||'',
-    status:user.status|| '',
-    description:user.description|| '',
-    due_date:user.due_date|| '',
-    _method: 'PUT'
+    email:user.email|| '',
+    password: '',
+    password_confirmation: '',
+    _method:"PUT",
+
 })
 
     const onSubmit = (e)=>{
     e.preventDefault();
     // console.log("submit requested!");
-    console.log(data);
         post(route('user.update', user.id)
             );
 }
@@ -49,33 +47,19 @@ const {data,setData, post, processing, errors , reset}= useForm({
                         <form onSubmit={onSubmit}
                               className={"p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"}>
                             {/*User Image*/}
-                            {user.image_path && <div className={"mb-4"}>
-                                <img src={user.image_path} alt={""} className={"w-64"}/>
-                            </div>}
+
                             {/*<div>*/}
                             {/*    <img src={user.image_path}*/}
                             {/*         alt=""*/}
                             {/*         className={"w-full h-64 object-cover"}/>*/}
                             {/*</div>*/}
-                            <div>
-                                <InputLabel htmlFor={"user_image_path"} value={"User Image"}/>
-                                <input id={"user_image_path"}
-                                           type={"file"}
-                                           name={"image"}
-                                           className={"mt-1 block w-full"}
-                                           onChange={e => setData(// Preserve the rest of the form data
-                                               'image', e.target.files[0] // Only update the image field
-                                           )}
-
-                                />
-                                <InputError message={errors.image} className={"mt-2"}/>
-                            </div>
                             {/*User Name*/}
                             <div className={"mt-4"}>
                                 <InputLabel htmlFor={"user_name"} value={"User Name"}/>
                                 <TextInput id={"user_name"}
                                            type={"text"}
                                            name={"name"}
+                                           isFocused={true}
                                            value={data.name}
                                            className={"mt-1 block w-full"}
                                            onChange={e => setData('name', e.target.value)}
@@ -83,52 +67,46 @@ const {data,setData, post, processing, errors , reset}= useForm({
                                 />
                                 <InputError message={errors.name} className={"mt-2"}/>
                             </div>
-                            {/*User Description*/}
+                            {/* User email  */}
                             <div className={"mt-4"}>
-                                <InputLabel htmlFor={"user_description"} value={"User Description"}/>
-
-                                <TextAreaInput id={"user_description"}
-                                               type={"text"}
-                                               name={"description"}
-                                               value={data.description}
-                                               className={"mt-1 block w-full"}
-                                               onChange={e => setData('description', e.target.value)}
-
-                                />
-                                <InputError message={errors.description} className={"mt-2"}/>
-                            </div>
-                            {/*    User Due Date*/}
-                            <div className={"mt-4"}>
-                                <InputLabel htmlFor={"user_due_date"} value={"User Deadline"}/>
-                                <TextInput id={"user_due_date"}
-                                           type={"date"}
-                                           name={"due_date"}
-                                           value={data.due_date}
+                                <InputLabel htmlFor={"user_email"} value={"User Email"}/>
+                                <TextInput id={"user_email"}
+                                           type={"text"}
+                                           name={"email"}
+                                           value={data.email}
                                            className={"mt-1 block w-full"}
-                                           onChange={e => setData('due_date', e.target.value)}
+                                           onChange={e => setData('email', e.target.value)}
 
                                 />
-                                <InputError message={errors.due_date} className={"mt-2"}/>
+                                <InputError message={errors.email} className={"mt-2"}/>
                             </div>
-
-                            {/*    User Status*/}
+                            {/* User password  */}
                             <div className={"mt-4"}>
-                                <InputLabel htmlFor={"user_status"} value={"User Status"}/>
-                                <SelectInput name={"status"}
-                                             id={"user_status"}
-                                             className={"mt-1 block w-full"}
-                                             onChange={(e) => setData('status', e.target.value)}
-                                >
-                                    <option value={""} disabled={true}>Select Status</option>
-                                    <option value={"pending"}>Pending</option>
-                                    <option value={"in_progress"}>In Progress</option>
-                                    <option value={"completed"}>Completed</option>
+                                <InputLabel htmlFor={"user_password"} value={"Password"}/>
+                                <TextInput id={"user_password"}
+                                           type={"password"}
+                                           name={"password"}
+                                           value={data.password}
+                                           className={"mt-1 block w-full"}
+                                           onChange={e => setData('password', e.target.value)}
 
-
-                                </SelectInput>
-
-                                <InputError message={errors.status} className={"mt-2"}/>
+                                />
+                                <InputError message={errors.password} className={"mt-2"}/>
                             </div>
+                            {/* User password confirm */}
+                            <div className={"mt-4"}>
+                                <InputLabel htmlFor={"user_password_confirmation"} value={"Confirm Password"}/>
+                                <TextInput id={"user_password_confirmation"}
+                                           type={"password"}
+                                           name={"user_password_confirmation"}
+                                           value={data.password_confirmation}
+                                           className={"mt-1 block w-full"}
+                                           onChange={e => setData('password_confirmation', e.target.value)}
+
+                                />
+                                <InputError message={errors.email} className={"mt-2"}/>
+                            </div>
+
 
 
                             <div className={"mt-4 text-right"}>

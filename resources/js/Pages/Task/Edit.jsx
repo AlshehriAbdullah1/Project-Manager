@@ -7,19 +7,26 @@ import TextAreaInput from "@/Components/TextAreaInput.jsx";
 import SelectInput from "@/Components/SelectInput.jsx";
 
 
-export default function Create ({auth}) {
+export default function Edit ({auth,task}) {
+    // console.log('task is : ');
+    // console.log(task);
+
 const {data,setData, post, processing, errors , reset}= useForm({
-    image:'',
-    name:'',
-    status:'',
-    description:'',
-    due_date:''
+    image:null,
+    name:task.name||'',
+    status:task.status|| '',
+    description:task.description|| '',
+    due_date:task.due_date|| '',
+    _method: 'PUT'
 })
 
     const onSubmit = (e)=>{
     e.preventDefault();
-    post(route('project.store'));
-    }
+    // console.log("submit requested!");
+    console.log(data);
+        post(route('task.update', task.id)
+            );
+}
 
 
     return (
@@ -27,36 +34,46 @@ const {data,setData, post, processing, errors , reset}= useForm({
             header={
                 <div className={"flex justify-between items-center"}>
 
-                    <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Create New Projects</h2>
+                    <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Edit Task {task.name}</h2>
                 </div>
 
             }
             user={auth.user}
 
         >
-            <Head title="Projects"/>
+            <Head title="Tasks"/>
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
 
                         <form onSubmit={onSubmit}
                               className={"p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"}>
-                            {/*Project Image*/}
+                            {/*Task Image*/}
+                            {task.image_path && <div className={"mb-4"}>
+                                <img src={task.image_path} alt={""} className={"w-64"}/>
+                            </div>}
+                            {/*<div>*/}
+                            {/*    <img src={task.image_path}*/}
+                            {/*         alt=""*/}
+                            {/*         className={"w-full h-64 object-cover"}/>*/}
+                            {/*</div>*/}
                             <div>
-                                <InputLabel htmlFor={"project_image_path"} value={"Project Image"}/>
-                                <TextInput id={"project_image_path"}
+                                <InputLabel htmlFor={"task_image_path"} value={"Task Image"}/>
+                                <input id={"task_image_path"}
                                            type={"file"}
                                            name={"image"}
                                            className={"mt-1 block w-full"}
-                                           onChange={e => setData('image', e.target.files[0])}
+                                           onChange={e => setData(// Preserve the rest of the form data
+                                               'image', e.target.files[0] // Only update the image field
+                                           )}
 
                                 />
                                 <InputError message={errors.image} className={"mt-2"}/>
                             </div>
-                            {/*Project Name*/}
+                            {/*Task Name*/}
                             <div className={"mt-4"}>
-                                <InputLabel htmlFor={"project_name"} value={"Project Name"}/>
-                                <TextInput id={"project_name"}
+                                <InputLabel htmlFor={"task_name"} value={"Task Name"}/>
+                                <TextInput id={"task_name"}
                                            type={"text"}
                                            name={"name"}
                                            value={data.name}
@@ -66,11 +83,11 @@ const {data,setData, post, processing, errors , reset}= useForm({
                                 />
                                 <InputError message={errors.name} className={"mt-2"}/>
                             </div>
-                            {/*Project Description*/}
+                            {/*Task Description*/}
                             <div className={"mt-4"}>
-                                <InputLabel htmlFor={"project_description"} value={"Project Description"}/>
+                                <InputLabel htmlFor={"task_description"} value={"Task Description"}/>
 
-                                <TextAreaInput id={"project_description"}
+                                <TextAreaInput id={"task_description"}
                                                type={"text"}
                                                name={"description"}
                                                value={data.description}
@@ -80,10 +97,10 @@ const {data,setData, post, processing, errors , reset}= useForm({
                                 />
                                 <InputError message={errors.description} className={"mt-2"}/>
                             </div>
-                            {/*    Project Due Date*/}
+                            {/*    Task Due Date*/}
                             <div className={"mt-4"}>
-                                <InputLabel htmlFor={"project_due_date"} value={"Project Deadline"}/>
-                                <TextInput id={"project_due_date"}
+                                <InputLabel htmlFor={"task_due_date"} value={"Task Deadline"}/>
+                                <TextInput id={"task_due_date"}
                                            type={"date"}
                                            name={"due_date"}
                                            value={data.due_date}
@@ -94,13 +111,13 @@ const {data,setData, post, processing, errors , reset}= useForm({
                                 <InputError message={errors.due_date} className={"mt-2"}/>
                             </div>
 
-                            {/*    Project Status*/}
+                            {/*    Task Status*/}
                             <div className={"mt-4"}>
-                                <InputLabel htmlFor={"project_status"} value={"Project Status"}/>
+                                <InputLabel htmlFor={"task_status"} value={"Task Status"}/>
                                 <SelectInput name={"status"}
-                                id={"project_status"}
+                                             id={"task_status"}
                                              className={"mt-1 block w-full"}
-                                             onChange={(e)=>setData('status',e.target.value)}
+                                             onChange={(e) => setData('status', e.target.value)}
                                 >
                                     <option value={""} disabled={true}>Select Status</option>
                                     <option value={"pending"}>Pending</option>
@@ -108,20 +125,20 @@ const {data,setData, post, processing, errors , reset}= useForm({
                                     <option value={"completed"}>Completed</option>
 
 
-
                                 </SelectInput>
 
                                 <InputError message={errors.status} className={"mt-2"}/>
                             </div>
 
-                            {/*Project cancel, edit*/}
+
                             <div className={"mt-4 text-right"}>
-                                <Link href={route('project.index')}
+                                <Link href={route('task.index')}
                                       className={"bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-all hover:bg-gray-200 mr-2"}
                                 >Cancel
                                 </Link>
 
-                                <button className={"bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"}>
+                                <button
+                                    className={"bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"}>
                                     Submit
                                 </button>
 
