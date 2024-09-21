@@ -1,10 +1,16 @@
 import Authenticated from "@/Layouts/AuthenticatedLayout.jsx";
 import {Head} from "@inertiajs/react";
-import {PROJECT_STATUS_CLASS_MAP, PROJECT_STATUS_TEXT_MAP} from "@/constants.jsx";
-import TasksTable from "@/Pages/Task/TasksTable.jsx";
+import {
+    TASK_PRIORITY_CLASS_MAP,
+    TASK_PRIORITY_TEXT_MAP,
+    TASK_STATUS_CLASS_MAP,
+    TASK_STATUS_TEXT_MAP
+} from "@/constants.jsx";
 
 
-export default function Show ({auth, task, queryParams,tasks}){
+export default function Show ({auth, task}){
+
+    console.log(task);
     return (
         <Authenticated
             user={auth.user}
@@ -43,8 +49,8 @@ export default function Show ({auth, task, queryParams,tasks}){
                                         <p className={"mt-1"}>
 
                                             <span
-                                                className={"px-2 py-1 rounded text-white " + PROJECT_STATUS_CLASS_MAP[task.status]}
-                                            >{PROJECT_STATUS_TEXT_MAP[task.status]}</span>
+                                                className={"px-2 py-1 rounded text-white " + TASK_STATUS_CLASS_MAP[task.status]}
+                                            >{TASK_STATUS_TEXT_MAP[task.status]}</span>
                                         </p>
 
 
@@ -62,34 +68,34 @@ export default function Show ({auth, task, queryParams,tasks}){
                                 {/*Second Row*/}
                                 <div>
                                     <div>
-                                        {/*Task Id*/}
+                                        {/*Project Id*/}
                                         <div>
-                                            <label className={"font-bold text-lg"}>Task ID</label>
-                                            <p className={"mt-1"}>{task.id}</p>
+                                            <label className={"font-bold text-lg"}>Project ID</label>
+                                            <p className={"mt-1"}>{task.project.id}</p>
                                         </div>
-                                        {/*task name*/}
+                                        {/*project name*/}
                                         <div className={"mt-4"}>
-                                            <label className={"font-bold text-lg"}>Task Name</label>
-                                            <p className={"mt-1"}>{task.id}</p>
+                                            <label className={"font-bold text-lg"}>Project Name</label>
+                                            <p className={"mt-1"}>{task.project.name}</p>
                                         </div>
-                                        {/*    task status? */}
+                                        {/*    task priority? */}
                                         <div className={"mt-4"}>
-                                            <label className={"font-bold text-lg"}>Task Status</label>
+                                            <label className={"font-bold text-lg"}>Priority</label>
                                             <p className={"mt-1"}>
 
                                             <span
-                                                className={"px-2 py-1 rounded text-white " + PROJECT_STATUS_CLASS_MAP[task.status]}
-                                            >{PROJECT_STATUS_TEXT_MAP[task.status]}</span>
+                                                className={"px-2 py-1 rounded text-white " + TASK_PRIORITY_CLASS_MAP[task.priority]}
+                                            >{TASK_PRIORITY_TEXT_MAP[task.priority]}</span>
                                             </p>
 
 
                                         </div>
-                                        {/*task created by*/}
+                                        {/*task Assigned to*/}
                                         <div className={"mt-4"}>
-                                            <label className={"font-bold text-lg"}>Created By</label>
+                                            <label className={"font-bold text-lg"}>Assigned to</label>
                                             {/*<pre >{task}</pre>*/}
 
-                                            <p className={"mt-1"}>{task.createdBy.name}</p>
+                                            <p className={"mt-1"}>{task.assignedUser.name}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -107,14 +113,14 @@ export default function Show ({auth, task, queryParams,tasks}){
             </div>
 
 
-            <div className={"py-12"}>
-                <div className={"mx-auto max-w-7xl sm:px-6 lg:px-8"}>
-                    <div className={"overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg"}>
-                        <div className={"p-6 text-gray-900 dark:text-gray-100"}>
-                        <TasksTable queryParams={queryParams} tasks={tasks} hideTaskColumn={true}/> </div>
-                    </div>
-                </div>
-            </div>
+            {/*<div className={"py-12"}>*/}
+            {/*    <div className={"mx-auto max-w-7xl sm:px-6 lg:px-8"}>*/}
+            {/*        <div className={"overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg"}>*/}
+            {/*            <div className={"p-6 text-gray-900 dark:text-gray-100"}>*/}
+            {/*            <TasksTable queryParams={queryParams} tasks={tasks} hideTaskColumn={true}/> </div>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
         </Authenticated>
 
     );

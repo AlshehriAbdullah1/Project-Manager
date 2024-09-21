@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TaskResource;
 use App\Models\Project;
 use App\Models\Task;
@@ -48,12 +47,16 @@ class TaskController extends Controller
     public function create( )
     {
 
+
         $data = request('project');
 
         // Find the project using the project ID
         $query = Project::query();
         $users = User::all();
         $project = $query->findOrFail($data);
+
+
+
         return inertia('Task/Create',[
             'project'=>$project,
             'users'=>$users
@@ -93,6 +96,16 @@ class TaskController extends Controller
     public function show(Task $task)
     {
         //
+//        $query=$task->project();
+
+//        dd(new TaskResource($task));
+        $project = $task->project();
+
+        return inertia('Task/Show',[
+
+            'task'=>new TaskResource($task),
+            'project'=>$project,
+        ]);
     }
 
     /**
@@ -101,6 +114,10 @@ class TaskController extends Controller
     public function edit(Task $task)
     {
         //
+//        return inertia('Project/Edit',[
+//            'task'=>new ProjectResource($project),
+//        ]);
+
     }
 
     /**
@@ -117,5 +134,16 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         //
+        $name= $task->name;
+        $task->delete();
+
+
+        if($task->image_path){
+            Storage::disk('public')->deleteDirectory(dirname($task->image_path));
+        }
+
+
+        return to_route('task.index')->with('success',"task $name was deleted successfully");
+
     }
 }

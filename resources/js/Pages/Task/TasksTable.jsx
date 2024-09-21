@@ -5,7 +5,6 @@ import {Link, router} from "@inertiajs/react";
 import Pagination from "@/Components/Pagination.jsx";
 
 export default function TasksTable({tasks,queryParams, hideProjectColumn =false,projectId}){
-
     queryParams = queryParams || {};
     const searchFiledChanged= (name,value)=>{
         if(value){
@@ -18,6 +17,16 @@ export default function TasksTable({tasks,queryParams, hideProjectColumn =false,
         router.get(route('task.index'),queryParams)
 
     };
+    const deleteTask = (task)=>{
+        // href={route('project.destroy', project.id)}
+
+        if(!window.confirm("Please confirm to delete the task ")){
+            return;
+        }
+        router.delete(route('task.destroy',task.id))
+
+    }
+
     //
     const onKeyPress = (name,e)=>{
         if(e.key !="Enter") return;
@@ -145,8 +154,8 @@ export default function TasksTable({tasks,queryParams, hideProjectColumn =false,
                        <th className="px-3 py-3"></th>
 
                        <th className="px-3 py-3">
-                           <Link href={route("task.create",{'project':projectId})} className={"bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"}>Add Task</Link>
-
+                           {hideProjectColumn&& <Link href={route("task.create",{'project':projectId})} className={"bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"}>Add Task</Link>
+                           }
                        </th>
                    </tr>
                    </thead>
@@ -159,7 +168,11 @@ export default function TasksTable({tasks,queryParams, hideProjectColumn =false,
                            <td className={"px-3 py-2"}>
                                <img src={task.image_path} style={{width: 60}}/>
                            </td>
-                           <td className={"px-3 py-2"}>{task.name}</td>
+                           <td className={"px-3 py-2"}>
+                               {/*<Link href=></Link>*/}
+                               <Link href={route('task.show',task.id)}> {task.name}</Link>
+                              </td>
+
                            {!hideProjectColumn&&<td className={"px-3 py-2"}>{task.project.name}</td>}
                            <td className={"px-3 py-2"}>
                                             <span
@@ -170,7 +183,7 @@ export default function TasksTable({tasks,queryParams, hideProjectColumn =false,
                            <td className={"px-3 py-2"}>{task.created_at}</td>
                            <td className={"px-3 py-2"}>{task.due_date}</td>
                            <td className={"px-3 py-2"}>{task.createdBy.name}</td>
-                           <td className={"px-3 py-2"}>
+                           <td className={"px-3 py-2 flex"}>
                                <Link href={route('task.edit', task.id)}
                                      className="mx-1 font-medium text-blue-600 hover:underline dark:text-blue-500"
 
@@ -179,13 +192,16 @@ export default function TasksTable({tasks,queryParams, hideProjectColumn =false,
                                    Edit
                                </Link>
 
-                               <Link href={route('task.destroy', task.id)}
-                                     className="mx-1 font-medium text-blue-600 hover:underline dark:text-red-500"
+                               <button
+                                   onClick={(e) => deleteTask(task)}
+
+
+                                   className="mx-1 font-medium text-blue-600 hover:underline dark:text-red-500"
 
                                >
 
                                    Delete
-                               </Link>
+                               </button>
                            </td>
                        </tr>
                    ))}
