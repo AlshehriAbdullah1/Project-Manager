@@ -143,7 +143,6 @@ class ProjectController extends Controller
                 Storage::disk('public')->deleteDirectory(dirname($project->image_path));
             }
             $data['image_path'] = $request->file('image')->store('project/' . Str::random(), 'public');
-        } else {
         }
         $project->update($data);
 

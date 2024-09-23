@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateTaskRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class UpdateTaskRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,18 @@ class UpdateTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
-        ];
+            'name'=>['sometimes', 'string', 'max:255'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            "description" => ['sometimes', 'string','max:255'],
+            "due_date" => ['sometimes', 'date'],
+            'status' => ['sometimes', Rule::in(['pending', 'in_progress', 'completed']),],
+            'priority' => ['sometimes', Rule::in(['low', 'medium', 'high']),],
+            'assigned_user_id'=>['required','exists:users,id'],
+
+
+            ];
     }
 }
+
+
+

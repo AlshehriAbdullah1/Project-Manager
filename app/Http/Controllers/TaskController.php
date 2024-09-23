@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\TaskResource;
+use App\Http\Resources\UserResource;
 use App\Models\Project;
 use App\Models\Task;
 use App\Http\Requests\StoreTaskRequest;
@@ -113,10 +114,11 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        //
-//        return inertia('Project/Edit',[
-//            'task'=>new ProjectResource($project),
-//        ]);
+        $users = UserResource::collection(User::all());
+        return inertia('Task/Edit',[
+            'task'=>new TaskResource($task),
+            'users'=>$users
+        ]);
 
     }
 
@@ -126,6 +128,22 @@ class TaskController extends Controller
     public function update(UpdateTaskRequest $request, Task $task)
     {
         //
+        $data = $request->validated();
+
+
+        $data['updated_by'] = Auth::id();
+        $data['updated_at']=time();
+
+        if ($request->hasFile('image')) {
+            if ($task->image_path) {
+                Storage::disk('public')->deleteDirectory(dirname($task->image_path));
+            }
+//            $data['image_path'] = $request->file('image')->store('task/' . Str::random(), 'public');
+            $data['image_path'] = '/storage/' . $request->file('image')->store('task/' . Str::random(), 'public');
+        }
+        $task->update($data);
+
+        return to_route('task.show',$task)->with('success', "Task $task->name was updated");
     }
 
     /**

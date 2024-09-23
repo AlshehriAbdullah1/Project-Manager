@@ -5,18 +5,21 @@ import TextInput from "@/Components/TextInput.jsx";
 import InputError from "@/Components/InputError.jsx";
 import TextAreaInput from "@/Components/TextAreaInput.jsx";
 import SelectInput from "@/Components/SelectInput.jsx";
+import colors from "tailwindcss/colors.js";
 
 
-export default function Edit ({auth,task}) {
+export default function Edit ({auth,task,users}) {
     // console.log('task is : ');
-    // console.log(task);
+
 
 const {data,setData, post, processing, errors , reset}= useForm({
     image:null,
     name:task.name||'',
     status:task.status|| '',
+    priority:task.priority||'',
     description:task.description|| '',
     due_date:task.due_date|| '',
+    assigned_user_id: task.assignedUser ? task.assignedUser.id : '',
     _method: 'PUT'
 })
 
@@ -116,6 +119,7 @@ const {data,setData, post, processing, errors , reset}= useForm({
                                 <InputLabel htmlFor={"task_status"} value={"Task Status"}/>
                                 <SelectInput name={"status"}
                                              id={"task_status"}
+                                             value={data.status}
                                              className={"mt-1 block w-full"}
                                              onChange={(e) => setData('status', e.target.value)}
                                 >
@@ -128,6 +132,46 @@ const {data,setData, post, processing, errors , reset}= useForm({
                                 </SelectInput>
 
                                 <InputError message={errors.status} className={"mt-2"}/>
+                            </div>
+                            {/*    Task Priority*/}
+                            <div className={"mt-4"}>
+                                <InputLabel htmlFor={"task_priority"} value={"Task Priority"}/>
+                                <SelectInput name={"priority"}
+                                             id={"task_priority"}
+                                             value={data.priority}
+                                             className={"mt-1 block w-full"}
+                                             onChange={(e) => setData('priority', e.target.value)}
+                                >
+                                    <option value={""} disabled={true}>Select Priority</option>
+                                    <option value={"low"}>low</option>
+                                    <option value={"medium"}>medium</option>
+                                    <option value={"high"}>high</option>
+
+
+                                </SelectInput>
+
+                                <InputError message={errors.status} className={"mt-2"}/>
+                            </div>
+                            <pre className={'text-white'}>{JSON.stringify(users)}</pre>
+
+                            {/* Assigned To */}
+                            <div className={"mt-4"}>
+                                <InputLabel htmlFor={"assigned_to"} value={"Assigned To"} />
+                                <SelectInput
+                                    name={"assigned_user_id"}
+                                    id={"assigned_to"}
+                                    value={data.assigned_user_id}  // Set default to assigned user
+                                    className={"mt-1 block w-full"}
+                                    onChange={e => setData('assigned_user_id', e.target.value)}
+                                >
+                                    <option value={""} disabled={true}>Select User</option>
+                                    {users.data.map(user => (
+                                        <option key={user.id} value={user.id}>
+                                            {user.name}
+                                        </option>
+                                    ))}
+                                </SelectInput>
+                                <InputError message={errors.assigned_user_id} className={"mt-2"} />
                             </div>
 
 
