@@ -30,6 +30,7 @@ class UpdateTaskRequest extends FormRequest
             'status' => ['sometimes', Rule::in(['pending', 'in_progress', 'completed']),],
             'priority' => ['sometimes', Rule::in(['low', 'medium', 'high']),],
             'assigned_user_id'=>['required','exists:users,id'],
+            'project_id'=>['required','exists:projects,id']
 
 
             ];

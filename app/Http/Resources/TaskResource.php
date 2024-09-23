@@ -31,4 +31,5 @@ class TaskResource extends JsonResource
             'project'=>new ProjectResource($this->project),
         ];
     }
+
 }

@@ -8,8 +8,8 @@ import SelectInput from "@/Components/SelectInput.jsx";
 import colors from "tailwindcss/colors.js";
 
 
-export default function Edit ({auth,task,users}) {
-    // console.log('task is : ');
+export default function Edit ({auth,task,users,projects}) {
+    console.log('task is : ');
 
 
 const {data,setData, post, processing, errors , reset}= useForm({
@@ -20,6 +20,7 @@ const {data,setData, post, processing, errors , reset}= useForm({
     description:task.description|| '',
     due_date:task.due_date|| '',
     assigned_user_id: task.assignedUser ? task.assignedUser.id : '',
+    project_id:task.project? task.project.id :'',
     _method: 'PUT'
 })
 
@@ -63,16 +64,18 @@ const {data,setData, post, processing, errors , reset}= useForm({
                             <div>
                                 <InputLabel htmlFor={"task_image_path"} value={"Task Image"}/>
                                 <input id={"task_image_path"}
-                                           type={"file"}
-                                           name={"image"}
-                                           className={"mt-1 block w-full"}
-                                           onChange={e => setData(// Preserve the rest of the form data
-                                               'image', e.target.files[0] // Only update the image field
-                                           )}
+                                       type={"file"}
+                                       name={"image"}
+                                       className={"mt-1 block w-full"}
+                                       onChange={e => setData(// Preserve the rest of the form data
+                                           'image', e.target.files[0] // Only update the image field
+                                       )}
 
                                 />
                                 <InputError message={errors.image} className={"mt-2"}/>
+
                             </div>
+                            {/*<pre className={'text-white'}>{JSON.stringify(task,undefined,2)}</pre>*/}
                             {/*Task Name*/}
                             <div className={"mt-4"}>
                                 <InputLabel htmlFor={"task_name"} value={"Task Name"}/>
@@ -152,11 +155,11 @@ const {data,setData, post, processing, errors , reset}= useForm({
 
                                 <InputError message={errors.status} className={"mt-2"}/>
                             </div>
-                            <pre className={'text-white'}>{JSON.stringify(users)}</pre>
+                            {/*<pre className={'text-white'}>{JSON.stringify(users)}</pre>*/}
 
-                            {/* Assigned To */}
+                            {/* Assigned To User*/}
                             <div className={"mt-4"}>
-                                <InputLabel htmlFor={"assigned_to"} value={"Assigned To"} />
+                                <InputLabel htmlFor={"assigned_to"} value={"Assigned To"}/>
                                 <SelectInput
                                     name={"assigned_user_id"}
                                     id={"assigned_to"}
@@ -171,9 +174,28 @@ const {data,setData, post, processing, errors , reset}= useForm({
                                         </option>
                                     ))}
                                 </SelectInput>
-                                <InputError message={errors.assigned_user_id} className={"mt-2"} />
+                                <InputError message={errors.assigned_user_id} className={"mt-2"}/>
                             </div>
 
+                            {/* belong to project */}
+                            <div className={"mt-4"}>
+                                <InputLabel htmlFor={"project_id"} value={"Belong to Project"}/>
+                                <SelectInput
+                                    name={"project_id"}
+                                    id={"project_id"}
+                                    value={data.project_id}  // Set default to assigned user
+                                    className={"mt-1 block w-full"}
+                                    onChange={e => setData('project_id', e.target.value)}
+                                >
+                                    <option value={""} disabled={true}>Select Project</option>
+                                    {projects.data.map(project => (
+                                        <option key={project.id} value={project.id}>
+                                            {project.id== task.project.id? project.name+' (Assigned)':project.name}
+                                        </option>
+                                    ))}
+                                </SelectInput>
+                                <InputError message={errors.assigned_user_id} className={"mt-2"}/>
+                            </div>
 
                             <div className={"mt-4 text-right"}>
                                 <Link href={route('task.index')}

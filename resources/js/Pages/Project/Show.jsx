@@ -12,6 +12,7 @@ export default function Show ({auth, project, queryParams,tasks}){
                 <div className={"flex justify-between items-center"}>
 
                     <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">{`Project: ${project.name}`}</h2>
+                    <Link href={route("project.edit",project.id)} className={"bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"}>Edit Project</Link>
                 </div>
 
             }
